@@ -46,16 +46,16 @@ class PasswordGenerator:
     def decrypt(self, hashed_password):
         charset = "abcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()-_+=[]{}|;:,.<>/?"
         for self.password_length in range(1, self.password_length + 1):
-            for password_candidate in itertools.product(charset, repeat=self.passord_length):
+            for password_candidate in itertools.product(charset, repeat=self.password_length):
                 hashed_password = "".join(password_candidate)
-                if hashed_password.encode().hexdigest() == hashed_password:
+                if hashlib.sha256(hashed_password.encode()).hexdigest() == hashed_password:
                     return "password decrypted"
 
-    def is_password_weak(self, hashed_password):
-        hashed_password = hashlib.sha256(hashed_password.encode()).hexdigest()
+    def is_password_weak(self):
+        hashed_password = hashlib.sha256(self.password.encode()).hexdigest()
         start_time = time.monotonic()
         while True:
-            result = decrypt(hashed_password)
+            result = self.decrypt(hashed_password)
             if result:
                 passed_time = time.monotonic() - start_time
                 if passed_time < 60:
@@ -76,7 +76,7 @@ class PasswordGenerator:
 if __name__ == '__main__':
     a = PasswordGenerator("/home/kote/PycharmProjects/password_task/test.json")
     a.generate_password()
-    a.__repr__()
-    a.__str__()
-    # a.decrypt()
-    # a.is_password_weak()
+    print(a.__repr__())
+    print(a.__str__())
+    print(a.decrypt('ca978112ca1bbdcafac231b39a23dc4da786eff8147c4e72b9807785afee48bb'))
+    print(a.is_password_weak())

@@ -1,5 +1,5 @@
 {
   "password_length": 1,
-  "include_numbers": true,
-  "include_symbols": true
+  "include_numbers": false,
+  "include_symbols": false
 }
