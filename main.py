@@ -1,4 +1,5 @@
 import hashlib
+import itertools
 import os
 import json
 import random
@@ -39,19 +40,30 @@ class PasswordGenerator:
         else:
             return "Password not generated"
 
-    def set_password_as_env_variable(self):
+    def password_as_env_variable(self):
         os.environ["PASSWORD"] = self.password
 
-    def check_password_strength(self):
-        start_time = time.time()
-        hacked = False
-        # ... some code to attempt to hack the password ...
-        if hacked:
-            return "Password is weak"
-        if time.time() - start_time < 60:
-            return "Password is weak"
-        else:
-            return "Password is strong"
+    def decrypt(self, hashed_password):
+        charset = "abcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()-_+=[]{}|;:,.<>/?"
+        for self.password_length in range(1, self.password_length + 1):
+            for password_candidate in itertools.product(charset, repeat=self.passord_length):
+                hashed_password = "".join(password_candidate)
+                if hashed_password.encode().hexdigest() == hashed_password:
+                    return "password decrypted"
+
+    def is_password_weak(self, hashed_password):
+        hashed_password = hashlib.sha256(hashed_password.encode()).hexdigest()
+        start_time = time.monotonic()
+        while True:
+            result = decrypt(hashed_password)
+            if result:
+                passed_time = time.monotonic() - start_time
+                if passed_time < 60:
+                    return "weak"
+                else:
+                    return "strong"
+                if self.passord_length >= 20:
+                    return "strong"
 
     def replace_weak_password(self):
         strength = self.check_password_strength()
@@ -59,3 +71,12 @@ class PasswordGenerator:
             self.generate_password()
             strength = self.check_password_strength()
         self.set_password_as_env_variable()
+
+
+if __name__ == '__main__':
+    a = PasswordGenerator("/home/kote/PycharmProjects/password_task/test.json")
+    a.generate_password()
+    a.__repr__()
+    a.__str__()
+    # a.decrypt()
+    # a.is_password_weak()
